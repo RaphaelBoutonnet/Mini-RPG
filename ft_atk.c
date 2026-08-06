@@ -7,7 +7,7 @@ struct termios    *setup(struct termios *old)
     tcgetattr(STDIN_FILENO, &raw);//permet de recuperer les attributs du terminal
     tcgetattr(STDIN_FILENO, old);
     raw.c_lflag &= ~(ECHO | ICANON);//desactive le mode canonique
-    raw.c_cc[VMIN] = 0;//nombre min de caractere a recevoir
+    raw.c_cc[VMIN] = 1;//nombre min de caractere a recevoir
     raw.c_cc[VTIME] = 0;//attente a 0
     tcsetattr(STDIN_FILENO, TCSAFLUSH, &raw);//defini les attributs terminal
     return (old);
@@ -71,13 +71,13 @@ void	ft_show_spells(int nb)
 {
 	write(1, "\n", 1);
 	if (nb >= 0)
-		write(1, "\n1. Boule de feu", 16);
+		write(1, "\n\033[31m1. Boule de feu\033[0m", 26);
 	if (nb >= 1)
-		write(1, "\n2. Toucher du phenix", 22);
+		write(1, "\n\033[33m2. Toucher du phenix\033[0m", 31);
 	if (nb >= 2)
-		write(1, "\n3. Tonnerre foudroyant", 24);
+		write(1, "\n\033[36m3. Tonnerre foudroyant\033[0m", 33);
 	if (nb >= 3)
-		write(1, "\n4. Coup de tronc d'arbre", 26);
+		write(1, "\n\033[35m4. Coup de tronc d'arbre\033[0m", 35);
 	write(1, "\n\n", 2);
 }
 
@@ -112,7 +112,7 @@ void	ft_atk(void)
 	}
 
 	struct termios    old;
-	char            c[3];
+	char            c[3] = {0};
 	old = *setup(&old);
 
 	Perso player;
@@ -123,16 +123,17 @@ void	ft_atk(void)
 	int enemynumber = 0;
 	int enemymax = 2;
 	int success = 0;
-	char buffer;
+	char buffer = 'a';
+	buffer += 0;
 	char targetbuffer;
 	char *enemyhpbuffer;
 	player.hp = 100; // A modifier dans le futur.
 	
-	while ((player.hp > 0) || (success != 1) || (enemynumber >= enemymax) /* Cette dernière condition sert de condition d'arrêt, à modifier pour la suite.*/)
+	while ((player.hp > 0) && (success != 1) /* Condition d'arrêt, à modifier pour la suite.*/)
 	{
-		ft_chose_enemy(enemynumber, enemyptr);
-		if (enemy.hp <= 0)
+		if (enemynumber > 0 && enemy.hp <= 0)
 			write(1, "\nTu as tue l'ennemi.", 21);
+		ft_chose_enemy(enemynumber, enemyptr);
 		write(1, "\nUn ennemi attaque, defends-toi !\n", 35);
 		while (enemy.hp > 0)
 		{
@@ -145,62 +146,52 @@ void	ft_atk(void)
 			write(1, "\n====================\n", 22);
 			ft_show_spells(3/*Nombre de spells actuellement débloqués à ce stade*/);
 			write(1, "\nQuel sort utilises-tu ?\n", 26);
-			while (buffer != 'S' || enemy.hp > 0)
+			c[0] = 'a';
+			while (c[0] < 49 || c[0] > 52)
 			{
-				while (c >= 49 && c <= 52)
+				int size = get_key(c, 3);
+				if ((!(c[0] >= 49 && c[0] <= 52)))
 				{
-					int size = get_key(c, 3);
-					if ((!(c >= 49 && c <= 52)))
-					{
-						ft_wrong_key(i, enemyptr, playerptr);
-						i++;
-						buffer = ('Z' - i);
-					}
-					// Si la touche entrée n'est pas entre 1 et 4, ft_wrong_spell, et on retourne au début de la boucle while. On réaffiche les pv de l'ennemi.
-					/* Ce qui suit n'est pas utile dans mon cas je crois.
-					if (size)
-						print_key(c, size);
-						*/
+					ft_wrong_key(i, enemyptr, playerptr);
+					i++;
+					buffer = ('Z' - i);
 				}
-				tcsetattr(STDIN_FILENO, TCSAFLUSH, &old);
-				// Fin de récupération d'input
+				// Si la touche entrée n'est pas entre 1 et 4, ft_wrong_spell, et on retourne au début de la boucle while. On réaffiche les pv de l'ennemi.
+					/* Ce qui suit n'est pas utile dans mon cas je crois.
+					*/if (size)
+						print_key(c, size); // De quoi voir sur quelle touche j'ai appuyé, à enlever dans la version finale.
+						/**/
+			}
+			tcsetattr(STDIN_FILENO, TCSAFLUSH, &old);
+			// Fin de récupération d'input
 
-				else if (buffer >= '1' && buffer <= '4')
+			if (c[0] == '2') // On vérifie si le sort Toucher du phenix a été choisi, car il peut être lancé sur soi-même pour se soigner.
+			{
+				write(1, "\nSur qui l'utiliser ?\n\n1 : Moi\n2 : L'ennemi", 44);
+				targetbuffer = 'a';
+				while (targetbuffer != 'S')
 				{
-					if (buffer == '2') // On vérifie si le sort Toucher du phenix a été choisi, car il peut être lancé sur soi-même pour se soigner.
+					while (c[0] < 49 && c[0] > 50)
 					{
-						write(1, "\nSur qui l'utiliser ?\n1 : Moi\n2 : L'ennemi", 43);
-						targetbuffer = 'a';
-						while (targetbuffer != 'S')
-						{
-							while (c >= 49 && c <= 50)
-							{
-								int size = get_key(c, 3);
-								if (c != 49 || c != 50)
-									write(1, "\nMauvaise touche !\n", 20):
-							}
-							if (c == 49)
-							{
-								ft_use_spell(buffer, enemyptr, playerptr, 1/*Sur le player*/);
-								targetbuffer = 'S';
-							}
-							else if (c == 50)
-							{
-								ft_use_spell(buffer, enemyptr, playerptr, 0/*Sur l'ennemi*/);
-								targetbuffer = 'S';
-							}
-							else
-							{
-								write(1, "\nLoupe, ton sort ne se lance pas...", 36);
-								targetbuffer = 'S';
-							}
-						}
+						get_key(c, 3);
+						if (c[0] != 49 && c[0] != 50)
+							write(1, "\nMauvaise touche !\n", 20);
 					}
-					else
-						ft_use_spell(buffer, enemyptr, playerptr, 0/*Sur l'ennemi*/);
-					buffer = 'S';
+					tcsetattr(STDIN_FILENO, TCSAFLUSH, &old);
+					if (c[0] == 49)
+					{
+						ft_use_spell('2', enemyptr, playerptr, 1/*Sur le player*/);
+						targetbuffer = 'S';
+					}
+					else if (c[0] == 50)
+					{
+						ft_use_spell('2', enemyptr, playerptr, 0/*Sur l'ennemi*/);
+						targetbuffer = 'S';
+					}
 				}
 			}
+			else
+				ft_use_spell(c[0], enemyptr, playerptr, 0/*Sur l'ennemi*/);
 		}
 		enemynumber++;
 		if (enemynumber >= enemymax)

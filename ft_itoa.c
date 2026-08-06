@@ -1,18 +1,9 @@
 #include "wom.h"
 
-int	ft_strlen(char *str)
-{
-	int (i) = 0;
-	while (str[i])
-		i++;
-	return (i);
-}
-
-char	*ft_reverse(char *str)
+char	*ft_reverse(char *str, int len)
 {
 	int (i) = 0;
 	char temp;
-	int (len) = ft_strlen(str);
 	while ((len / 2) > 0 )
 	{
 		temp = str[i];
@@ -37,6 +28,9 @@ char	*ft_itoa(int nb)
 		count++;
 	}
 	res = malloc((sizeof(char) * count) + 1);
+	if (res == NULL)
+		return NULL;
+	res[0] = '\0';
 	while (nb > 0)
 	{
 		chartemp = (nb % 10) + '0';
@@ -44,7 +38,7 @@ char	*ft_itoa(int nb)
 		res[i] = chartemp;
 		i++;
 	}
-	ft_reverse(res);
+	ft_reverse(res, count);
 	res[i] = '\0';
 	return (res);
 }
