@@ -63,7 +63,7 @@ void	ft_use_spell(char nspell, Mob *enemyptr, Perso *playerptr, int target)
 	}
 }
 
-void	ft_wrong_key(int i, Mob *enemyptr, Perso *playerptr)
+char	ft_wrong_key(int i/*, Mob *enemyptr, Perso *playerptr*/)
 {
 	if (i == 0)
 		write(1, "\nNon, ce n'est pas comme ca, reessaye !\n", 40);
@@ -76,8 +76,9 @@ void	ft_wrong_key(int i, Mob *enemyptr, Perso *playerptr)
 	if (i == 6)
 	{
 		write(1, "\nBON C'EST PLUS POSSIBLE LA, JE VAIS LE LANCER MOI-MEME\n", 57);
-		ft_use_spell('3', enemyptr, playerptr, 0/*Sur l'ennemi*/);
+		return ('1');
 	}
+	return ('a');
 }
 
 void	ft_show_spells(int nb)
@@ -104,9 +105,9 @@ void	ft_chose_enemy(int enemynumber, Mob *enemyptr)
 	}
 	if (enemynumber == 1)
 	{
-		enemyptr->hp = 22;
-		enemyptr->dmg = 4;
-		enemyptr->def = 1;
+		enemyptr->hp = 27;
+		enemyptr->dmg = 10;
+		enemyptr->def = 2;
 	}
 }
 
@@ -136,10 +137,12 @@ void	ft_atk(void)
 	int enemynumber = 0;
 	int enemymax = 2;
 	int success = 0;
+	int nspell = 0;
 	char buffer = 'a';
 	buffer += 0;
 	char targetbuffer;
 	char *enemyhpbuffer;
+	char *playerhpbuffer;
 	player.hp = 100; // A modifier dans le futur.
 	
 	while ((player.hp > 0) && (success != 1) /* Condition d'arrêt, à modifier pour la suite.*/)
@@ -154,10 +157,20 @@ void	ft_atk(void)
 			write(1, "\n====================\n", 22);
 			write(1, "PV de l'ennemi : ", 18);
 			ft_put_str(enemyhpbuffer);
+			write(1, "\n====================\n", 22);
 			free(enemyhpbuffer);
 			// Affiche les PV de l'ennemi.
+
+			ft_show_spells(nspell/*Nombre de spells actuellement débloqués à ce stade*/);
+
+			playerhpbuffer = ft_itoa(player.hp);
 			write(1, "\n====================\n", 22);
-			ft_show_spells(3/*Nombre de spells actuellement débloqués à ce stade*/);
+			write(1, "Tes PV : ", 9);
+			ft_put_str(playerhpbuffer);
+			write(1, "\n====================\n", 22);
+			free(playerhpbuffer);
+			// Affiche les PV du player.
+
 			write(1, "\nQuel sort utilises-tu ?\n", 26);
 			c[0] = 'a';
 			while (c[0] < 49 || c[0] > 52)
@@ -166,9 +179,8 @@ void	ft_atk(void)
 				flush();
 				if ((!(c[0] >= 49 && c[0] <= 52)))
 				{
-					ft_wrong_key(i, enemyptr, playerptr);
+					c[0] = ft_wrong_key(i/*, enemyptr, playerptr*/);
 					i++;
-					buffer = ('Z' - i);
 				}
 				// Si la touche entrée n'est pas entre 1 et 4, ft_wrong_spell, et on retourne au début de la boucle while. On réaffiche les pv de l'ennemi.
 					/* Ce qui suit n'est pas utile dans mon cas je crois.
@@ -203,11 +215,15 @@ void	ft_atk(void)
 			}
 			else
 				ft_use_spell(c[0], enemyptr, playerptr, 0/*Sur l'ennemi*/);
+			if (enemy.hp > 0)
+				ft_enemy_atk(enemyptr, playerptr);
 		}
 		enemynumber++;
+		nspell++;
 		if (enemynumber >= enemymax)
 			success = 1;
 	}
 	tcsetattr(STDIN_FILENO, TCSAFLUSH, &old);
+	write(1, "\nTu as tue tous les ennemis ! Bravo !", 38);
 	write(1, "\nFIN\n", 5);
 }

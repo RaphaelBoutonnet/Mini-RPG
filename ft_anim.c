@@ -10,6 +10,7 @@ void	ft_anim(int nb, int dealt, int alive, int target)
 
 	if (nb == 0)
 	{
+		BLANK_TERMINAL;
 		write(1, "\n\n  ~~~o", 7);
 		nanosleep(&req, NULL);
 		BLANK_TERMINAL;
@@ -41,77 +42,18 @@ void	ft_anim(int nb, int dealt, int alive, int target)
 		nanosleep(&req, NULL);
 		BLANK_TERMINAL;
 		write(1, "\n\n                         [HIT]", 32);
+		req.tv_nsec = PAUSE_1S; // Set la pause a 1 seconde au lieu de 100ms.
 		chardealt = ft_itoa(dealt); // Convertit l'int dealt en str pour l'afficher
 		write(1, "\n\n\033[1m\033[31m -", 14); // Met le texte en gras et rouge et affiche -
 		ft_put_str(chardealt); // Affiche les dégats
-		write(1, " PV", 3); // Affiche l'indicateur PV à côté du nombre de dégats
+		write(1, " PV ", 4); // Affiche l'indicateur PV à côté du nombre de dégats
 		if (alive == 0)
-			write(1, " (MORT)", 7); // Si la cible est morte, indique (MORT).
+			write(1, "\033[47m(MORT)", 12); // Si la cible est morte, indique (MORT).
 		write(1, "\033[0m", 5); // Réinitialise la police d'écriture
 		nanosleep(&req, NULL); // Met une pause de 100 ms.
 		BLANK_TERMINAL; // Efface le terminal.
-		
-		// La commande se répète plusieurs fois : en fait c'est juste pour laisser
-		// affiché plus longtemps... J'aurais pu créer un second timer plus long
-		// et n'afficher qu'une fois aussi.
-		write(1, "\n\n                         [HIT]", 32);
-		write(1, "\n\n\033[1m\033[31m -", 14);
-		ft_put_str(chardealt);
-		write(1, " PV", 3);
-		if (alive == 0)
-			write(1, " (MORT)", 7);
-		write(1, "\033[0m", 5);
-		nanosleep(&req, NULL);
-		BLANK_TERMINAL;
-		write(1, "\n\n                         [HIT]", 32);
-		write(1, "\n\n\033[1m\033[31m -", 14);
-		ft_put_str(chardealt);
-		write(1, " PV", 3);
-		if (alive == 0)
-			write(1, " (MORT)", 7);
-		write(1, "\033[0m", 5);
-		nanosleep(&req, NULL);
-		BLANK_TERMINAL;
-		write(1, "\n\n                         [HIT]", 32);
-		write(1, "\n\n\033[1m\033[31m -", 14);
-		ft_put_str(chardealt);
-		write(1, " PV", 3);
-		if (alive == 0)
-			write(1, " (MORT)", 7);
-		write(1, "\033[0m", 5);
-		nanosleep(&req, NULL);
-		BLANK_TERMINAL;
-		write(1, "\n\n                         [HIT]", 32);
-		write(1, "\n\n\033[1m\033[31m -", 14);
-		ft_put_str(chardealt);
-		write(1, " PV", 3);
-		if (alive == 0)
-			write(1, " (MORT)", 7);
-		write(1, "\033[0m", 5);
-		nanosleep(&req, NULL);
-		BLANK_TERMINAL;
-		write(1, "\n\n                         [HIT]", 32);
-		write(1, "\n\n\033[1m\033[31m -", 14);
-		ft_put_str(chardealt);
-		write(1, " PV", 3);
-		if (alive == 0)
-			write(1, " (MORT)", 7);
-		write(1, "\033[0m", 5);
-		nanosleep(&req, NULL);
-		BLANK_TERMINAL;
-		write(1, "\n\n                         [HIT]", 32);
-		write(1, "\n\n\033[1m\033[31m -", 14);
-		ft_put_str(chardealt);
-		write(1, " PV", 3);
-		if (alive == 0)
-			write(1, " (MORT)", 7);
-		write(1, "\033[0m", 5);
-		nanosleep(&req, NULL);
-		BLANK_TERMINAL;
 		free(chardealt); // Free le malloc pour chardealt
-		write(1, "\n\n                         -000-", 31);
-		nanosleep(&req, NULL);
-		BLANK_TERMINAL;
+		req.tv_nsec = PAUSE_100MS;
 		write(1, "\n\n                         -o0o-", 31);
 		nanosleep(&req, NULL);
 		BLANK_TERMINAL;
@@ -124,15 +66,6 @@ void	ft_anim(int nb, int dealt, int alive, int target)
 		write(1, "\n\n                           -", 29);
 		nanosleep(&req, NULL);
 		BLANK_TERMINAL;
-		write(1, "\n\n                            ", 29);
-		nanosleep(&req, NULL);
-		BLANK_TERMINAL;
-		write(1, "\n\n                            ", 29);
-		nanosleep(&req, NULL);
-		BLANK_TERMINAL;
-		write(1, "\n\n                            ", 29);
-		nanosleep(&req, NULL);
-		BLANK_TERMINAL;
 	}
 
 	// BOULE DE FEU (FIN)
@@ -141,6 +74,7 @@ void	ft_anim(int nb, int dealt, int alive, int target)
 	
 	if (nb == 1)
 	{
+		BLANK_TERMINAL;
 		write(1, "\n\nV                     ", 24);
 		nanosleep(&req, NULL);
 		BLANK_TERMINAL;
@@ -198,12 +132,6 @@ void	ft_anim(int nb, int dealt, int alive, int target)
 		write(1, "\n\nVIENS A MOI PHENIX    ", 24);
 		nanosleep(&req, NULL);
 		BLANK_TERMINAL;
-		write(1, "\n\n* * * * * * * * * * * ", 24);
-		nanosleep(&req, NULL);
-		BLANK_TERMINAL;
-		write(1, "\n\n * * * * * * * * * * *", 24);
-		nanosleep(&req, NULL);
-		BLANK_TERMINAL;
 		write(1, "\n\nVIENS A MOI PHENIX !  ", 24);
 		nanosleep(&req, NULL);
 		BLANK_TERMINAL;
@@ -248,67 +176,15 @@ void	ft_anim(int nb, int dealt, int alive, int target)
 		BLANK_TERMINAL;
 		if (target == 0) // Si j'attaque l'ennemi avec ce sort
 		{
+			BLANK_TERMINAL;
+			req.tv_nsec = PAUSE_1S;
 			chardealt = ft_itoa(dealt); // Convertit l'int dealt en str pour l'afficher
 			write(1, "\n\n      [HIT]", 13);
 			write(1, "\n\n\033[1m\033[31m -", 14);
 			ft_put_str(chardealt);
-			write(1, " PV", 3);
+			write(1, " PV ", 4);
 			if (alive == 0)
-				write(1, " (MORT)", 7);
-			write(1, "\033[0m", 5);
-			nanosleep(&req, NULL);
-			BLANK_TERMINAL;
-			write(1, "\n\n      [HIT]", 13);
-			write(1, "\n\n\033[1m\033[31m -", 14);
-			ft_put_str(chardealt);
-			write(1, " PV", 3);
-			if (alive == 0)
-				write(1, " (MORT)", 7);
-			write(1, "\033[0m", 5);
-			nanosleep(&req, NULL);
-			BLANK_TERMINAL;
-			write(1, "\n\n      [HIT]", 13);
-			write(1, "\n\n\033[1m\033[31m -", 14);
-			ft_put_str(chardealt);
-			write(1, " PV", 3);
-			if (alive == 0)
-				write(1, " (MORT)", 7);
-			write(1, "\033[0m", 5);
-			nanosleep(&req, NULL);
-			BLANK_TERMINAL;
-			write(1, "\n\n      [HIT]", 13);
-			write(1, "\n\n\033[1m\033[31m -", 14);
-			ft_put_str(chardealt);
-			write(1, " PV", 3);
-			if (alive == 0)
-				write(1, " (MORT)", 7);
-			write(1, "\033[0m", 5);
-			nanosleep(&req, NULL);
-			BLANK_TERMINAL;
-			write(1, "\n\n      [HIT]", 13);
-			write(1, "\n\n\033[1m\033[31m -", 14);
-			ft_put_str(chardealt);
-			write(1, " PV", 3);
-			if (alive == 0)
-				write(1, " (MORT)", 7);
-			write(1, "\033[0m", 5);
-			nanosleep(&req, NULL);
-			BLANK_TERMINAL;
-			write(1, "\n\n      [HIT]", 13);
-			write(1, "\n\n\033[1m\033[31m -", 14);
-			ft_put_str(chardealt);
-			write(1, " PV", 3);
-			if (alive == 0)
-				write(1, " (MORT)", 7);
-			write(1, "\033[0m", 5);
-			nanosleep(&req, NULL);
-			BLANK_TERMINAL;
-			write(1, "\n\n      [HIT]", 13);
-			write(1, "\n\n\033[1m\033[31m -", 14);
-			ft_put_str(chardealt);
-			write(1, " PV", 3);
-			if (alive == 0)
-				write(1, " (MORT)", 7);
+				write(1, "\033[47m(MORT)", 12);
 			write(1, "\033[0m", 5);
 			nanosleep(&req, NULL);
 			BLANK_TERMINAL;
@@ -316,56 +192,9 @@ void	ft_anim(int nb, int dealt, int alive, int target)
 		}
 		if (target == 1) // Si je me soigne avec ce sort
 		{
+			BLANK_TERMINAL;
+			req.tv_nsec = PAUSE_1S;
 			chardealt = ft_itoa(dealt); // Convertit l'int dealt en str pour l'afficher
-			write(1, "\n\n      [HEAL]", 14);
-			write(1, "\n\n\033[1m\033[32m +", 14);
-			ft_put_str(chardealt);
-			write(1, " PV", 3);
-			write(1, "\033[0m", 5);
-			nanosleep(&req, NULL);
-			BLANK_TERMINAL;
-			write(1, "\n\n      [HEAL]", 14);
-			write(1, "\n\n\033[1m\033[32m +", 14);
-			ft_put_str(chardealt);
-			write(1, " PV", 3);
-			write(1, "\033[0m", 5);
-			nanosleep(&req, NULL);
-			BLANK_TERMINAL;
-			write(1, "\n\n      [HEAL]", 14);
-			write(1, "\n\n\033[1m\033[32m +", 14);
-			ft_put_str(chardealt);
-			write(1, " PV", 3);
-			write(1, "\033[0m", 5);
-			nanosleep(&req, NULL);
-			BLANK_TERMINAL;
-			write(1, "\n\n      [HEAL]", 14);
-			write(1, "\n\n\033[1m\033[32m +", 14);
-			ft_put_str(chardealt);
-			write(1, " PV", 3);
-			write(1, "\033[0m", 5);
-			nanosleep(&req, NULL);
-			BLANK_TERMINAL;
-			write(1, "\n\n      [HEAL]", 14);
-			write(1, "\n\n\033[1m\033[32m +", 14);
-			ft_put_str(chardealt);
-			write(1, " PV", 3);
-			write(1, "\033[0m", 5);
-			nanosleep(&req, NULL);
-			BLANK_TERMINAL;
-			write(1, "\n\n      [HEAL]", 14);
-			write(1, "\n\n\033[1m\033[32m +", 14);
-			ft_put_str(chardealt);
-			write(1, " PV", 3);
-			write(1, "\033[0m", 5);
-			nanosleep(&req, NULL);
-			BLANK_TERMINAL;
-			write(1, "\n\n      [HEAL]", 14);
-			write(1, "\n\n\033[1m\033[32m +", 14);
-			ft_put_str(chardealt);
-			write(1, " PV", 3);
-			write(1, "\033[0m", 5);
-			nanosleep(&req, NULL);
-			BLANK_TERMINAL;
 			write(1, "\n\n      [HEAL]", 14);
 			write(1, "\n\n\033[1m\033[32m +", 14);
 			ft_put_str(chardealt);

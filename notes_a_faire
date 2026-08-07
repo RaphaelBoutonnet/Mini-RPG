@@ -1,12 +1,9 @@
-
-
 Alors, il reste à faire :
 
-	- Ajouter l'animation des sorts
-	- Effacer le terminal à chaque étape et le re remplir de manière adaptative à la page
-	- Régler le problème qui fait que 1er sort ça marche en push direct, et après faut appuyer sur entrée
-	- Faire en sorte de remplir player.name avec un strcopy fait main
+	- FIX : Des le debut je peux utiliser les 4 sorts. Faire en sorte que non.
+	- En fonction de l'xp, débloquer des sorts (pour l'instant c en fonction du nb d'ennemis).
 	- Ajouter des ennemis
 	- Ajouter de l'xp
-	- En fonction de l'xp, débloquer des sorts
-	- Ajouter des messages divers et variés
+	- Faire en sorte de remplir player.name avec un strcopy fait main
+	- Faire un makefile
+
