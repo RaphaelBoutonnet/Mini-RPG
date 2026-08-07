@@ -1,8 +1,7 @@
 Alors, il reste à faire :
 
-	- FIX : Des le debut je peux utiliser les 4 sorts. Faire en sorte que non.
+	- Faire en sorte que la boucle de mauvaises touches marche autant de fois que possible. La au bout de la seconde fois, ca bug.
 	- En fonction de l'xp, débloquer des sorts (pour l'instant c en fonction du nb d'ennemis).
-	- Ajouter des ennemis
 	- Ajouter de l'xp
 	- Faire en sorte de remplir player.name avec un strcopy fait main
 	- Faire un makefile

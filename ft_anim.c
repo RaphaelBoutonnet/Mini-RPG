@@ -10,6 +10,7 @@ void	ft_anim(int nb, int dealt, int alive, int target)
 
 	if (nb == 0)
 	{
+		write(1, "\033[?25l", 7);
 		BLANK_TERMINAL;
 		write(1, "\n\n  ~~~o", 7);
 		nanosleep(&req, NULL);
@@ -50,7 +51,8 @@ void	ft_anim(int nb, int dealt, int alive, int target)
 		if (alive == 0)
 			write(1, "\033[47m(MORT)", 12); // Si la cible est morte, indique (MORT).
 		write(1, "\033[0m", 5); // Réinitialise la police d'écriture
-		nanosleep(&req, NULL); // Met une pause de 100 ms.
+		nanosleep(&req, NULL); // Met une pause de 1s.
+		nanosleep(&req, NULL); // Met une pause de 1s.
 		BLANK_TERMINAL; // Efface le terminal.
 		free(chardealt); // Free le malloc pour chardealt
 		req.tv_nsec = PAUSE_100MS;
@@ -66,6 +68,7 @@ void	ft_anim(int nb, int dealt, int alive, int target)
 		write(1, "\n\n                           -", 29);
 		nanosleep(&req, NULL);
 		BLANK_TERMINAL;
+		write(1, "\033[?25h", 7);
 	}
 
 	// BOULE DE FEU (FIN)
@@ -74,6 +77,7 @@ void	ft_anim(int nb, int dealt, int alive, int target)
 	
 	if (nb == 1)
 	{
+		write(1, "\033[?25l", 7);
 		BLANK_TERMINAL;
 		write(1, "\n\nV                     ", 24);
 		nanosleep(&req, NULL);
@@ -150,6 +154,7 @@ void	ft_anim(int nb, int dealt, int alive, int target)
 		write(1, "\n\nVIENS A MOI PHENIX !!!", 24);
 		nanosleep(&req, NULL);
 		BLANK_TERMINAL;
+		write(1, "\033[31m", 5);
 		write(1, "\n\n* * * * * * * * * * * ", 24);
 		nanosleep(&req, NULL);
 		BLANK_TERMINAL;
@@ -173,6 +178,7 @@ void	ft_anim(int nb, int dealt, int alive, int target)
 		BLANK_TERMINAL;
 		write(1, "\n\n * * * * * * * * * * *", 24);
 		nanosleep(&req, NULL);
+		write(1, "\033[0m", 5); // Réinitialise la police d'écriture
 		BLANK_TERMINAL;
 		if (target == 0) // Si j'attaque l'ennemi avec ce sort
 		{
@@ -187,8 +193,10 @@ void	ft_anim(int nb, int dealt, int alive, int target)
 				write(1, "\033[47m(MORT)", 12);
 			write(1, "\033[0m", 5);
 			nanosleep(&req, NULL);
+			nanosleep(&req, NULL);
 			BLANK_TERMINAL;
 			free(chardealt); // Free le malloc
+			write(1, "\033[?25h", 7);
 		}
 		if (target == 1) // Si je me soigne avec ce sort
 		{
@@ -201,10 +209,175 @@ void	ft_anim(int nb, int dealt, int alive, int target)
 			write(1, " PV", 3);
 			write(1, "\033[0m", 5);
 			nanosleep(&req, NULL);
+			nanosleep(&req, NULL);
 			BLANK_TERMINAL;
 			free(chardealt); // Free le malloc
+			write(1, "\033[?25h", 7);
 		}
 
+
+	}
+
+	// TOUCHER DU PHENIX (FIN)
+
+	// TONNERRE FOUDROYANT (DEBUT)
+	
+	if (nb == 2)
+	{
+		write(1, "\033[?25l", 7);
+		BLANK_TERMINAL;
+		write(1, "\033[46m", 5);
+		write(1, "\n\n  ^v ^v^ v", 12);
+		nanosleep(&req, NULL);
+		BLANK_TERMINAL;
+		write(1, "\n\n  ^v ^v /v^v ^ v^v", 20);
+		nanosleep(&req, NULL);
+		BLANK_TERMINAL;
+		write(1, "\n\n  #v ## /v^v ^ v^v/-~^v-^", 27);
+		nanosleep(&req, NULL);
+		BLANK_TERMINAL;
+		write(1, "\n\n     *  .  ,     '       \n", 28);
+		write(1, "  #v ## /v^v ^ v^v/-~^v-^", 25);
+		write(1, "\n        . *,        '    ", 26);
+		nanosleep(&req, NULL);
+		BLANK_TERMINAL;
+		write(1, "\n\n      # .  ,  *  '  #    \n", 28);
+		write(1, "        /v     v^   ~^ -^", 25);
+		write(1, "\n           ,   . ## '   #", 26);
+		nanosleep(&req, NULL);
+		BLANK_TERMINAL;
+		write(1, "\n\n       # .  ,  *  '  #   \n", 28);
+		write(1, "                         ", 25);
+		write(1, "\n          ,   . ## '   # ", 26);
+		nanosleep(&req, NULL);
+		BLANK_TERMINAL;
+		write(1, "\n\n        # .     *        \n", 28);
+		write(1, "                         ", 25);
+		write(1, "\n         ,        '   #  ", 26);
+		nanosleep(&req, NULL);
+		BLANK_TERMINAL;
+		write(1, "\n\n                 *       \n", 28);
+		write(1, "                         ", 25);
+		write(1, "\n         ,               ", 26);
+		nanosleep(&req, NULL);
+		BLANK_TERMINAL;
+		write(1, "\n\n     *  .  ,     '       \n", 28);
+		write(1, "  #v ## /v^v ^ v^v/-~^v-^", 25);
+		write(1, "\n        . *,        '    ", 26);
+		nanosleep(&req, NULL);
+		BLANK_TERMINAL;
+		write(1, "\n\n      # .  ,  *  '  #    \n", 28);
+		write(1, "        /v     v^   ~^ -^", 25);
+		write(1, "\n           ,   . ## '   #", 26);
+		nanosleep(&req, NULL);
+		BLANK_TERMINAL;
+		write(1, "\n\n       # .  ,  *  '  #   \n", 28);
+		write(1, "                         ", 25);
+		write(1, "\n          ,   . ## '   # ", 26);
+		nanosleep(&req, NULL);
+		BLANK_TERMINAL;
+		write(1, "\n\n        # .     *        \n", 28);
+		write(1, "                         ", 25);
+		write(1, "\n         ,        '   #  ", 26);
+		nanosleep(&req, NULL);
+		BLANK_TERMINAL;
+		write(1, "\n\n                 *       \n", 28);
+		write(1, "                         ", 25);
+		write(1, "\n         ,               ", 26);
+		nanosleep(&req, NULL);
+		BLANK_TERMINAL;
+		write(1, "\n\n     *  .  ,     '       \n", 28);
+		write(1, "  #v ## /v^v ^ v^v/-~^v-^", 25);
+		write(1, "\n        . *,        '    ", 26);
+		nanosleep(&req, NULL);
+		BLANK_TERMINAL;
+		write(1, "\n\n      # .  ,  *  '  #    \n", 28);
+		write(1, "        /v     v^   ~^ -^", 25);
+		write(1, "\n           ,   . ## '   #", 26);
+		nanosleep(&req, NULL);
+		BLANK_TERMINAL;
+		write(1, "\n\n       # .  ,  *  '  #   \n", 28);
+		write(1, "                         ", 25);
+		write(1, "\n          ,   . ## '   # ", 26);
+		nanosleep(&req, NULL);
+		BLANK_TERMINAL;
+		write(1, "\n\n        # .     *        \n", 28);
+		write(1, "                         ", 25);
+		write(1, "\n         ,        '   #  ", 26);
+		nanosleep(&req, NULL);
+		BLANK_TERMINAL;
+		write(1, "\n\n                 *       \n", 28);
+		write(1, "                         ", 25);
+		write(1, "\n         ,               ", 26);
+		nanosleep(&req, NULL);
+		write(1, "\033[0m", 5); // Réinitialise la police d'écriture
+		BLANK_TERMINAL;
+		write(1, "\n\n      [HIT]", 13);
+		req.tv_nsec = PAUSE_1S; // Set la pause a 1 seconde au lieu de 100ms.
+		chardealt = ft_itoa(dealt); // Convertit l'int dealt en str pour l'afficher
+		write(1, "\n\n\033[1m\033[31m -", 14); // Met le texte en gras et rouge et affiche -
+		ft_put_str(chardealt); // Affiche les dégats
+		write(1, " PV ", 4); // Affiche l'indicateur PV à côté du nombre de dégats
+		if (alive == 0)
+			write(1, "\033[47m(MORT)", 12); // Si la cible est morte, indique (MORT).
+		write(1, "\033[0m", 5); // Réinitialise la police d'écriture
+		nanosleep(&req, NULL); // Met une pause de 1s.
+		nanosleep(&req, NULL); // Met une pause de 1s.
+		BLANK_TERMINAL; // Efface le terminal.
+		free(chardealt); // Free le malloc pour chardealt
+		write(1, "\033[?25h", 7);
+	}
+
+	// TONNERRE FOUDROYANT (FIN)
+	
+	// COUP DE TRONC D'ARBRE (DEBUT)
+	
+	if (nb == 3)
+	{
+		write(1, "\033[?25l", 7);
+		req.tv_nsec = PAUSE_1S; // Set la pause a 1 seconde au lieu de 100ms.
+		BLANK_TERMINAL;
+		write(1, "\n\n\n\n\n      ##", 13);
+		write(1, "\n      ||", 9);
+		write(1, "\n      ||", 9);
+		write(1, "\n      ||", 9);
+		write(1, "\n      ||", 9);
+		write(1, "\n      ||", 9);
+		nanosleep(&req, NULL);
+		BLANK_TERMINAL;
+		write(1, "\n\n\n\n\n        ##", 15);
+		write(1, "\n        ||", 11);
+		write(1, "\n        ||", 11);
+		write(1, "\n        ||", 11);
+		write(1, "\n        ||", 11);
+		write(1, "\n        ||", 11);
+		nanosleep(&req, NULL);
+		BLANK_TERMINAL;
+		write(1, "\n\n\n\n\n          ##", 17);
+		write(1, "\n          ||", 13);
+		write(1, "\n          ||", 13);
+		write(1, "\n          ||", 13);
+		write(1, "\n          ||", 13);
+		write(1, "\n          ||", 13);
+		nanosleep(&req, NULL);
+		nanosleep(&req, NULL);
+		BLANK_TERMINAL;
+		write(1, "\n\n\n\n\n\n\n\n\n          __________#", 30);
+		write(1, "\n          ----------#", 22);
+		nanosleep(&req, NULL);
+		BLANK_TERMINAL;
+		chardealt = ft_itoa(dealt); // Convertit l'int dealt en str pour l'afficher
+		write(1, "\n\n\033[1m\033[31m -", 14); // Met le texte en gras et rouge et affiche -
+		ft_put_str(chardealt); // Affiche les dégats
+		write(1, " PV ", 4); // Affiche l'indicateur PV à côté du nombre de dégats
+		if (alive == 0)
+			write(1, "\033[47m(MORT ET ENTERRE)", 23); // Si la cible est morte, indique (MORT).
+		write(1, "\033[0m", 5); // Réinitialise la police d'écriture
+		nanosleep(&req, NULL); // Met une pause de 1s.
+		nanosleep(&req, NULL); // Met une pause de 1s.
+		BLANK_TERMINAL; // Efface le terminal.
+		free(chardealt); // Free le malloc pour chardealt
+		write(1, "\033[?25h", 7);
 
 	}
 }

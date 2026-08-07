@@ -64,7 +64,7 @@ void	ft_use_spell(char nspell, Mob *enemyptr, Perso *playerptr, int target)
 }
 
 char	ft_wrong_key(int i/*, Mob *enemyptr, Perso *playerptr*/)
-{
+{	
 	if (i == 0)
 		write(1, "\nNon, ce n'est pas comme ca, reessaye !\n", 40);
 	if (i == 1)
@@ -109,6 +109,18 @@ void	ft_chose_enemy(int enemynumber, Mob *enemyptr)
 		enemyptr->dmg = 10;
 		enemyptr->def = 2;
 	}
+	if (enemynumber == 2)
+	{
+		enemyptr->hp = 3;
+		enemyptr->dmg = 6;
+		enemyptr->def = 14;
+	}
+	if (enemynumber == 3)
+	{
+		enemyptr->hp = 200;
+		enemyptr->dmg = 8;
+		enemyptr->def = 3;
+	}
 }
 
 void	ft_atk(void)
@@ -135,9 +147,9 @@ void	ft_atk(void)
 	Mob *enemyptr = &enemy;
 	int (i) = 0;
 	int enemynumber = 0;
-	int enemymax = 2;
+	int enemymax = 4;
 	int success = 0;
-	int nspell = 0;
+	int nspell = 1;
 	char buffer = 'a';
 	buffer += 0;
 	char targetbuffer;
@@ -161,7 +173,7 @@ void	ft_atk(void)
 			free(enemyhpbuffer);
 			// Affiche les PV de l'ennemi.
 
-			ft_show_spells(nspell/*Nombre de spells actuellement débloqués à ce stade*/);
+			ft_show_spells(nspell - 1/*Nombre de spells actuellement débloqués à ce stade*/);
 
 			playerhpbuffer = ft_itoa(player.hp);
 			write(1, "\n====================\n", 22);
@@ -172,12 +184,12 @@ void	ft_atk(void)
 			// Affiche les PV du player.
 
 			write(1, "\nQuel sort utilises-tu ?\n", 26);
-			c[0] = 'a';
+			c[0] = 30;
 			while (c[0] < 49 || c[0] > 52)
 			{
 				get_key(c, 3);
 				flush();
-				if ((!(c[0] >= 49 && c[0] <= 52)))
+				if ((!(c[0] >= 49 && c[0] <= 52)) || ((c[0] - '0') > nspell))
 				{
 					c[0] = ft_wrong_key(i/*, enemyptr, playerptr*/);
 					i++;

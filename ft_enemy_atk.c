@@ -8,6 +8,7 @@ void	ft_enemy_atk(Mob *enemyptr, Perso *playerptr)
 	playerptr->hp -= dealt;
 
 	// ATTAQUE ENNEMIE (DEBUT)
+	write(1, "\033[?25l", 7);
 	write(1, "\033[31m", 5);	
 	write(1, "         /", 10);
 	nanosleep(&req, NULL);
@@ -53,5 +54,6 @@ void	ft_enemy_atk(Mob *enemyptr, Perso *playerptr)
 	write(1, "\033[0m", 5);	
 	BLANK_TERMINAL;
 	free(chardealt);
+	write(1, "\033[?25h", 7);
 	// ATTAQUE ENNEMIE (FIN)
 }
