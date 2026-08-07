@@ -13,40 +13,53 @@ struct termios    *setup(struct termios *old)
     return (old);
 }
 
-void	ft_put_str(char *str)
-{
-	int (i) = 0;
-	while (str[i])
-	{
-		write(1, &str[i], 1);
-		i++;
-	}
-}
-
 void	ft_use_spell(char nspell, Mob *enemyptr, Perso *playerptr, int target)
 {
+	int dealt;
 	if (nspell == '1') // Boule de feu
 	{
-		write(1, "\n~~~~~~~~~o", 12);
+		dealt = (7 - enemyptr->def);
 		enemyptr->hp = (enemyptr->hp) - (7 - enemyptr->def);
+		if (enemyptr->hp <= 0)
+			ft_anim(0, dealt, 0, 0);
+		else
+			ft_anim(0, dealt, 1, 0);
 	}
 	if (nspell == '2') // Toucher du phenix
 	{
-		write(1, "\n*~#~*~#~*", 11);
 		if (target == 0)
+		{
+			dealt = (5 - enemyptr->def);
 			enemyptr->hp = (enemyptr->hp) - (5 - enemyptr->def);
+			if (enemyptr->hp <= 0)
+				ft_anim(1/* Select le bon sort*/, dealt, 0/*L ennemi est mort*/, 0/* Vise l'ennemi*/);
+			else
+				ft_anim(1/* Select le bon sort*/, dealt, 1/* L ennemi est vivant*/, 0/* Vise l'ennemi*/);
+		}
 		else
+		{
+			dealt = 12;
 			playerptr->hp = (playerptr->hp) + 12;
+			ft_anim(1/* Sélectionne le bon sort */, dealt, 1/* L ennemi est vivant*/, 1/* Vise le player*/);
+		}
 	}
 	if (nspell == '3') // Tonnerre foudroyant
 	{
-		write(1, "\n~/~/~~/~~~/~/~", 16);
+		dealt = (15 - enemyptr->def);
 		enemyptr->hp = (enemyptr->hp) - (15 - enemyptr->def);
+		if (enemyptr->hp <= 0)
+			ft_anim(2, dealt, 0, 0);
+		else
+			ft_anim(2, dealt, 1, 0);
 	}
 	if (nspell == '4') // Coup de tronc d'arbre
 	{
-		write(1, "\n~~~======##", 13);
+		dealt = (1000 - enemyptr->def);
 		enemyptr->hp = (enemyptr->hp) - (1000 - enemyptr->def);
+		if (enemyptr->hp <= 0)
+			ft_anim(3, dealt, 0, 0);
+		else
+			ft_anim(3, dealt, 1, 0);
 	}
 }
 
@@ -62,8 +75,8 @@ void	ft_wrong_key(int i, Mob *enemyptr, Perso *playerptr)
 		write(1, "\nCe n'est pas la bonne touche...\n", 33);
 	if (i == 6)
 	{
-		write(1, "\nBON C'EST PLUS POSSIBLE LA, JE VAIS LE LANCER MOI-MEME\n", 56);
-		ft_use_spell(4, enemyptr, playerptr, 0/*Sur l'ennemi*/);
+		write(1, "\nBON C'EST PLUS POSSIBLE LA, JE VAIS LE LANCER MOI-MEME\n", 57);
+		ft_use_spell('3', enemyptr, playerptr, 0/*Sur l'ennemi*/);
 	}
 }
 
@@ -105,9 +118,9 @@ void	ft_atk(void)
 		int nb = read(0, buff, length);
 		return (nb);
 	}
-	void    print_key(char    *buff, int size)
+	void    flush/*print_key*/(void/*char    *buff, int size*/)
 	{
-		printf("lettre : %d, %d, %d, %d\n", buff[0], buff[1], buff[2], size);
+		/* printf("lettre : %d, %d, %d, %d\n", buff[0], buff[1], buff[2], size);*/
 		fflush(stdout);//vide le tampon de sortie (merci google)
 	}
 
@@ -149,7 +162,8 @@ void	ft_atk(void)
 			c[0] = 'a';
 			while (c[0] < 49 || c[0] > 52)
 			{
-				int size = get_key(c, 3);
+				get_key(c, 3);
+				flush();
 				if ((!(c[0] >= 49 && c[0] <= 52)))
 				{
 					ft_wrong_key(i, enemyptr, playerptr);
@@ -158,26 +172,23 @@ void	ft_atk(void)
 				}
 				// Si la touche entrée n'est pas entre 1 et 4, ft_wrong_spell, et on retourne au début de la boucle while. On réaffiche les pv de l'ennemi.
 					/* Ce qui suit n'est pas utile dans mon cas je crois.
-					*/if (size)
-						print_key(c, size); // De quoi voir sur quelle touche j'ai appuyé, à enlever dans la version finale.
+					if (size)
+						print_key(c, size); */ // De quoi voir sur quelle touche j'ai appuyé, à enlever dans la version finale.
 						/**/
 			}
-			tcsetattr(STDIN_FILENO, TCSAFLUSH, &old);
 			// Fin de récupération d'input
 
 			if (c[0] == '2') // On vérifie si le sort Toucher du phenix a été choisi, car il peut être lancé sur soi-même pour se soigner.
 			{
 				write(1, "\nSur qui l'utiliser ?\n\n1 : Moi\n2 : L'ennemi", 44);
 				targetbuffer = 'a';
+				c[0] = 'a';
 				while (targetbuffer != 'S')
 				{
-					while (c[0] < 49 && c[0] > 50)
-					{
-						get_key(c, 3);
-						if (c[0] != 49 && c[0] != 50)
-							write(1, "\nMauvaise touche !\n", 20);
-					}
-					tcsetattr(STDIN_FILENO, TCSAFLUSH, &old);
+					get_key(c, 3);
+					flush();
+					if (c[0] != '1' && c[0] != '2')
+						write(1, "\nMauvaise touche !\n", 20);
 					if (c[0] == 49)
 					{
 						ft_use_spell('2', enemyptr, playerptr, 1/*Sur le player*/);
@@ -197,5 +208,6 @@ void	ft_atk(void)
 		if (enemynumber >= enemymax)
 			success = 1;
 	}
+	tcsetattr(STDIN_FILENO, TCSAFLUSH, &old);
 	write(1, "\nFIN\n", 5);
 }
