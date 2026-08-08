@@ -18,8 +18,11 @@ void	ft_use_spell(char nspell, Mob *enemyptr, Perso *playerptr, int target)
 	int dealt;
 	if (nspell == '1') // Boule de feu
 	{
-		dealt = (7 - enemyptr->def);
-		enemyptr->hp = (enemyptr->hp) - (7 - enemyptr->def);
+		dealt = (700 - enemyptr->def);
+		if (dealt > 0)
+			enemyptr->hp = (enemyptr->hp) - (700 - enemyptr->def);
+		else
+			dealt = 0;
 		if (enemyptr->hp <= 0)
 			ft_anim(0, dealt, 0, 0);
 		else
@@ -30,7 +33,10 @@ void	ft_use_spell(char nspell, Mob *enemyptr, Perso *playerptr, int target)
 		if (target == 0)
 		{
 			dealt = (5 - enemyptr->def);
-			enemyptr->hp = (enemyptr->hp) - (5 - enemyptr->def);
+			if (dealt > 0)
+				enemyptr->hp = (enemyptr->hp) - (5 - enemyptr->def);
+			else
+				dealt = 0;
 			if (enemyptr->hp <= 0)
 				ft_anim(1/* Select le bon sort*/, dealt, 0/*L ennemi est mort*/, 0/* Vise l'ennemi*/);
 			else
@@ -46,7 +52,10 @@ void	ft_use_spell(char nspell, Mob *enemyptr, Perso *playerptr, int target)
 	if (nspell == '3') // Tonnerre foudroyant
 	{
 		dealt = (15 - enemyptr->def);
-		enemyptr->hp = (enemyptr->hp) - (15 - enemyptr->def);
+		if (dealt > 0)
+			enemyptr->hp = (enemyptr->hp) - (15 - enemyptr->def);
+		else
+			dealt = 0;
 		if (enemyptr->hp <= 0)
 			ft_anim(2, dealt, 0, 0);
 		else
@@ -54,8 +63,11 @@ void	ft_use_spell(char nspell, Mob *enemyptr, Perso *playerptr, int target)
 	}
 	if (nspell == '4') // Coup de tronc d'arbre
 	{
-		dealt = (1000 - enemyptr->def);
-		enemyptr->hp = (enemyptr->hp) - (1000 - enemyptr->def);
+		dealt = (47 - enemyptr->def);
+		if (dealt > 0)
+			enemyptr->hp = (enemyptr->hp) - (47 - enemyptr->def);
+		else
+			dealt = 0;
 		if (enemyptr->hp <= 0)
 			ft_anim(3, dealt, 0, 0);
 		else
@@ -63,19 +75,23 @@ void	ft_use_spell(char nspell, Mob *enemyptr, Perso *playerptr, int target)
 	}
 }
 
-char	ft_wrong_key(int i/*, Mob *enemyptr, Perso *playerptr*/)
+char	ft_wrong_key(int i/*, Mob *enemyptr, Perso *playerptr*/, int *ptri)
 {	
 	if (i == 0)
 		write(1, "\nNon, ce n'est pas comme ca, reessaye !\n", 40);
 	if (i == 1)
 		write(1, "\nAlors, tu ne te rappelles plus comment lancer un sort ?\n", 57);
 	if (i == 2)
-		write(1, "\nCette touche servait a casser ton bidulometre... Je vais t'aider :\n\nAPPUIE SUR 1, 2 ou 3.\n", 91);
+		write(1, "\nCette touche servait a casser ton bidulometre... Je vais t'aider :\n\nSelectionne un sort disponible en appuyant sur la touche correspondante de ton clavier !\n", 159);
 	if (i >= 3 && i <= 5)
 		write(1, "\nCe n'est pas la bonne touche...\n", 33);
 	if (i == 6)
 	{
 		write(1, "\nBON C'EST PLUS POSSIBLE LA, JE VAIS LE LANCER MOI-MEME\n", 57);
+		ft_wait_one_sec();
+		ft_wait_one_sec();
+		// Pause de 2s le temps de bien lire le texte.
+		*ptri = (-1);
 		return ('1');
 	}
 	return ('a');
@@ -123,7 +139,7 @@ void	ft_chose_enemy(int enemynumber, Mob *enemyptr)
 	}
 }
 
-void	ft_atk(void)
+void	ft_atk(char *nomperso)
 {
 	// De quoi récupérer les inputs
 	int    get_key(char *buff, int length)
@@ -143,6 +159,15 @@ void	ft_atk(void)
 
 	Perso player;
 	Perso *playerptr = &player;
+
+	// Copie nomperso dans player.name
+	int icopy = 0;
+	while (nomperso[icopy])
+	{
+		player.name[icopy] = nomperso[icopy];
+		icopy++;
+	}
+	// Fin de la copie
 	Mob enemy;
 	Mob *enemyptr = &enemy;
 	int (i) = 0;
@@ -154,7 +179,10 @@ void	ft_atk(void)
 	buffer += 0;
 	char targetbuffer;
 	char *enemyhpbuffer;
+	char *enemyhpmax;
 	char *playerhpbuffer;
+	int *ptri;
+	ptri = &i;
 	player.hp = 100; // A modifier dans le futur.
 	
 	while ((player.hp > 0) && (success != 1) /* Condition d'arrêt, à modifier pour la suite.*/)
@@ -162,6 +190,7 @@ void	ft_atk(void)
 		if (enemynumber > 0 && enemy.hp <= 0)
 			write(1, "\nTu as tue l'ennemi.", 21);
 		ft_chose_enemy(enemynumber, enemyptr);
+		enemyhpmax = ft_itoa(enemy.hp);
 		write(1, "\nUn ennemi attaque, defends-toi !\n", 35);
 		while (enemy.hp > 0)
 		{
@@ -169,6 +198,8 @@ void	ft_atk(void)
 			write(1, "\n====================\n", 22);
 			write(1, "PV de l'ennemi : ", 18);
 			ft_put_str(enemyhpbuffer);
+			write(1, " / ", 3);
+			ft_put_str(enemyhpmax);
 			write(1, "\n====================\n", 22);
 			free(enemyhpbuffer);
 			// Affiche les PV de l'ennemi.
@@ -191,7 +222,7 @@ void	ft_atk(void)
 				flush();
 				if ((!(c[0] >= 49 && c[0] <= 52)) || ((c[0] - '0') > nspell))
 				{
-					c[0] = ft_wrong_key(i/*, enemyptr, playerptr*/);
+					c[0] = ft_wrong_key(i/*, enemyptr, playerptr*/, ptri);
 					i++;
 				}
 				// Si la touche entrée n'est pas entre 1 et 4, ft_wrong_spell, et on retourne au début de la boucle while. On réaffiche les pv de l'ennemi.
@@ -236,6 +267,10 @@ void	ft_atk(void)
 			success = 1;
 	}
 	tcsetattr(STDIN_FILENO, TCSAFLUSH, &old);
-	write(1, "\nTu as tue tous les ennemis ! Bravo !", 38);
+	write(1, "\nTu as tue tous les ennemis ! Bravo ", 37);
+	ft_put_str(player.name);
+	free(enemyhpmax);
+	free(nomperso);
+	write(1, " !", 2);
 	write(1, "\nFIN\n", 5);
 }

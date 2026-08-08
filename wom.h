@@ -13,6 +13,7 @@
 #define PAUSE_1S 999999999L
 
 typedef struct characters {
+	char 	name[30];
 	int	hp;
 	int	exp;
 
@@ -29,6 +30,7 @@ typedef struct mobs {
 void	ft_enemy_atk(Mob *enemyptr, Perso *playerptr);
 void	ft_put_str(char *str);
 void	ft_anim(int nb, int dealt, int alive, int target);
-void	ft_nom(void);
-void	ft_atk(void);
+char	*ft_nom(void);
+void	ft_atk(char *nomperso);
 char	*ft_itoa(int nb);
+void	ft_wait_one_sec(void);

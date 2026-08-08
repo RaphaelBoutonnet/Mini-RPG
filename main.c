@@ -2,7 +2,6 @@
 
 int	main(void)
 {
-	ft_nom();
-	ft_atk();
+	ft_atk(ft_nom());
 	return (0);
 }

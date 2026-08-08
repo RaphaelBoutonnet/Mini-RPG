@@ -22,24 +22,35 @@ char	*ft_itoa(int nb)
 	int	nbtemp = nb;
 	int (i) = 0;
 	int (count) = 0;
-	while (nbtemp > 0)
+	if (nb <= 0)
 	{
-		nbtemp = nbtemp / 10;
-		count++;
+		res = malloc(sizeof(char) + 1);
+		if (res == NULL)
+			return NULL;
+		res[0] = '0';
+		res[1] = '\0';
 	}
-	res = malloc((sizeof(char) * count) + 1);
-	if (res == NULL)
-		return NULL;
-	res[0] = '\0';
-	while (nb > 0)
+	else
 	{
-		chartemp = (nb % 10) + '0';
-		nb = nb / 10;
-		res[i] = chartemp;
-		i++;
+		while (nbtemp > 0)
+		{
+			nbtemp = nbtemp / 10;
+			count++;
+		}
+		res = malloc((sizeof(char) * count) + 1);
+		if (res == NULL)
+			return NULL;
+		res[0] = '\0';
+		while (nb > 0)
+		{
+			chartemp = (nb % 10) + '0';
+			nb = nb / 10;
+			res[i] = chartemp;
+			i++;
+		}
+		ft_reverse(res, count);
+		res[i] = '\0';
 	}
-	ft_reverse(res, count);
-	res[i] = '\0';
 	return (res);
 }
 /*

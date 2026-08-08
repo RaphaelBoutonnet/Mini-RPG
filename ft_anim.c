@@ -1,6 +1,13 @@
 #define _POSIX_C_SOURCE 199309L
 #include "wom.h"
 
+void	ft_wait_one_sec(void)
+{
+	struct timespec req = {0, PAUSE_100MS};
+	req.tv_nsec = PAUSE_1S; // Set la pause a 1 seconde au lieu de 100ms.
+	nanosleep(&req, NULL);
+}
+
 void	ft_anim(int nb, int dealt, int alive, int target)
 {
 	char	*chardealt;
@@ -49,7 +56,7 @@ void	ft_anim(int nb, int dealt, int alive, int target)
 		ft_put_str(chardealt); // Affiche les dégats
 		write(1, " PV ", 4); // Affiche l'indicateur PV à côté du nombre de dégats
 		if (alive == 0)
-			write(1, "\033[47m(MORT)", 12); // Si la cible est morte, indique (MORT).
+			write(1, "\033[47m(ENNEMI MORT)", 19); // Si la cible est morte, indique (MORT).
 		write(1, "\033[0m", 5); // Réinitialise la police d'écriture
 		nanosleep(&req, NULL); // Met une pause de 1s.
 		nanosleep(&req, NULL); // Met une pause de 1s.
@@ -190,7 +197,7 @@ void	ft_anim(int nb, int dealt, int alive, int target)
 			ft_put_str(chardealt);
 			write(1, " PV ", 4);
 			if (alive == 0)
-				write(1, "\033[47m(MORT)", 12);
+				write(1, "\033[47m(ENNEMI MORT)", 19);
 			write(1, "\033[0m", 5);
 			nanosleep(&req, NULL);
 			nanosleep(&req, NULL);
@@ -319,7 +326,7 @@ void	ft_anim(int nb, int dealt, int alive, int target)
 		ft_put_str(chardealt); // Affiche les dégats
 		write(1, " PV ", 4); // Affiche l'indicateur PV à côté du nombre de dégats
 		if (alive == 0)
-			write(1, "\033[47m(MORT)", 12); // Si la cible est morte, indique (MORT).
+			write(1, "\033[47m(ENNEMI MORT)", 19); // Si la cible est morte, indique (MORT).
 		write(1, "\033[0m", 5); // Réinitialise la police d'écriture
 		nanosleep(&req, NULL); // Met une pause de 1s.
 		nanosleep(&req, NULL); // Met une pause de 1s.
@@ -371,7 +378,7 @@ void	ft_anim(int nb, int dealt, int alive, int target)
 		ft_put_str(chardealt); // Affiche les dégats
 		write(1, " PV ", 4); // Affiche l'indicateur PV à côté du nombre de dégats
 		if (alive == 0)
-			write(1, "\033[47m(MORT ET ENTERRE)", 23); // Si la cible est morte, indique (MORT).
+			write(1, "\033[47m(ENNEMI MORT ET ENTERRE)", 30); // Si la cible est morte, indique (MORT).
 		write(1, "\033[0m", 5); // Réinitialise la police d'écriture
 		nanosleep(&req, NULL); // Met une pause de 1s.
 		nanosleep(&req, NULL); // Met une pause de 1s.
