@@ -1,5 +1,5 @@
 Alors, il reste à faire :
 	
-	- En fonction de l'xp, débloquer des sorts (pour l'instant c en fonction du nb d'ennemis).
+	- Ajouter l'action "Se reposer" qui ne tape rien mais regen 5 pv
 	- Faire un makefile
 

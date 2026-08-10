@@ -16,6 +16,7 @@ typedef struct characters {
 	char 	name[30];
 	int	hp;
 	int	exp;
+	int	lvl;
 
 } Perso;
 
@@ -27,10 +28,13 @@ typedef struct mobs {
 
 #endif
 
-void	ft_enemy_atk(Mob *enemyptr, Perso *playerptr);
 void	ft_put_str(char *str);
+char	*ft_itoa(int nb);
+void	ft_enemy_atk(Mob *enemyptr, Perso *playerptr);
 void	ft_anim(int nb, int dealt, int alive, int target);
 char	*ft_nom(void);
 void	ft_atk(char *nomperso);
-char	*ft_itoa(int nb);
+void	ft_lvl_up(void);
+void	ft_show_exp(Perso *playerptr);
+void	ft_exp(int enemynumber, Perso *playerptr);
 void	ft_wait_one_sec(void);

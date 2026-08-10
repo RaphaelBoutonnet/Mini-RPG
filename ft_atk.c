@@ -18,9 +18,9 @@ void	ft_use_spell(char nspell, Mob *enemyptr, Perso *playerptr, int target)
 	int dealt;
 	if (nspell == '1') // Boule de feu
 	{
-		dealt = (700 - enemyptr->def);
+		dealt = (7 - enemyptr->def) + playerptr->lvl;
 		if (dealt > 0)
-			enemyptr->hp = (enemyptr->hp) - (700 - enemyptr->def);
+			enemyptr->hp = (enemyptr->hp) - ((7 - enemyptr->def) + playerptr->lvl);
 		else
 			dealt = 0;
 		if (enemyptr->hp <= 0)
@@ -32,9 +32,9 @@ void	ft_use_spell(char nspell, Mob *enemyptr, Perso *playerptr, int target)
 	{
 		if (target == 0)
 		{
-			dealt = (5 - enemyptr->def);
+			dealt = (5 - enemyptr->def) + playerptr->lvl;
 			if (dealt > 0)
-				enemyptr->hp = (enemyptr->hp) - (5 - enemyptr->def);
+				enemyptr->hp = (enemyptr->hp) - ((5 - enemyptr->def) + playerptr->lvl);
 			else
 				dealt = 0;
 			if (enemyptr->hp <= 0)
@@ -44,16 +44,16 @@ void	ft_use_spell(char nspell, Mob *enemyptr, Perso *playerptr, int target)
 		}
 		else
 		{
-			dealt = 12;
-			playerptr->hp = (playerptr->hp) + 12;
+			dealt = 12 + playerptr->lvl;
+			playerptr->hp = (playerptr->hp) + (12 + playerptr->lvl);
 			ft_anim(1/* Sélectionne le bon sort */, dealt, 1/* L ennemi est vivant*/, 1/* Vise le player*/);
 		}
 	}
 	if (nspell == '3') // Tonnerre foudroyant
 	{
-		dealt = (15 - enemyptr->def);
+		dealt = (15 - enemyptr->def) + (playerptr->lvl * 2);
 		if (dealt > 0)
-			enemyptr->hp = (enemyptr->hp) - (15 - enemyptr->def);
+			enemyptr->hp = (enemyptr->hp) - ((15 - enemyptr->def) + playerptr->lvl * 2);
 		else
 			dealt = 0;
 		if (enemyptr->hp <= 0)
@@ -63,9 +63,9 @@ void	ft_use_spell(char nspell, Mob *enemyptr, Perso *playerptr, int target)
 	}
 	if (nspell == '4') // Coup de tronc d'arbre
 	{
-		dealt = (47 - enemyptr->def);
+		dealt = (47 - enemyptr->def) + playerptr->lvl;
 		if (dealt > 0)
-			enemyptr->hp = (enemyptr->hp) - (47 - enemyptr->def);
+			enemyptr->hp = (enemyptr->hp) - ((47 - enemyptr->def) + playerptr->lvl);
 		else
 			dealt = 0;
 		if (enemyptr->hp <= 0)
@@ -115,26 +115,62 @@ void	ft_chose_enemy(int enemynumber, Mob *enemyptr)
 {
 	if (enemynumber == 0)
 	{
-		enemyptr->hp = 10;
+		enemyptr->hp = 3;
 		enemyptr->dmg = 4;
 		enemyptr->def = 0;
 	}
 	if (enemynumber == 1)
 	{
-		enemyptr->hp = 27;
-		enemyptr->dmg = 10;
-		enemyptr->def = 2;
+		enemyptr->hp = 5;
+		enemyptr->dmg = 5;
+		enemyptr->def = 0;
 	}
 	if (enemynumber == 2)
 	{
-		enemyptr->hp = 3;
-		enemyptr->dmg = 6;
-		enemyptr->def = 14;
+		enemyptr->hp = 10;
+		enemyptr->dmg = 7;
+		enemyptr->def = 0;
 	}
 	if (enemynumber == 3)
 	{
-		enemyptr->hp = 200;
+		enemyptr->hp = 12;
+		enemyptr->dmg = 15;
+		enemyptr->def = 0;
+	}
+	if (enemynumber == 4)
+	{
+		enemyptr->hp = 10;
 		enemyptr->dmg = 8;
+		enemyptr->def = 3;
+	}
+	if (enemynumber == 5)
+	{
+		enemyptr->hp = 20;
+		enemyptr->dmg = 10;
+		enemyptr->def = 3;
+	}
+	if (enemynumber == 6)
+	{
+		enemyptr->hp = 40;
+		enemyptr->dmg = 6;
+		enemyptr->def = 0;
+	}
+	if (enemynumber == 7)
+	{
+		enemyptr->hp = 37;
+		enemyptr->dmg = 10;
+		enemyptr->def = 1;
+	}
+	if (enemynumber == 8)
+	{
+		enemyptr->hp = 98;
+		enemyptr->dmg = 10;
+		enemyptr->def = 0;
+	}
+	if (enemynumber == 9)
+	{
+		enemyptr->hp = 110;
+		enemyptr->dmg = 20;
 		enemyptr->def = 3;
 	}
 }
@@ -172,36 +208,53 @@ void	ft_atk(char *nomperso)
 	Mob *enemyptr = &enemy;
 	int (i) = 0;
 	int enemynumber = 0;
-	int enemymax = 4;
+	int enemymax = 10;
 	int success = 0;
+	int defeat = 0;
 	int nspell = 1;
 	char buffer = 'a';
 	buffer += 0;
 	char targetbuffer;
 	char *enemyhpbuffer;
+	char *enemydefbuffer;
+	char *enemydmgbuffer;
 	char *enemyhpmax;
 	char *playerhpbuffer;
 	int *ptri;
+	player.exp = 0;
+	player.lvl = 0;
 	ptri = &i;
 	player.hp = 100; // A modifier dans le futur.
 	
-	while ((player.hp > 0) && (success != 1) /* Condition d'arrêt, à modifier pour la suite.*/)
+	while ((player.hp > 0) && (success != 1)/* Condition d'arrêt, à modifier pour la suite.*/)
 	{
+		ft_exp(enemynumber, playerptr);
+		nspell = (player.lvl) + 1;
 		if (enemynumber > 0 && enemy.hp <= 0)
 			write(1, "\nTu as tue l'ennemi.", 21);
 		ft_chose_enemy(enemynumber, enemyptr);
 		enemyhpmax = ft_itoa(enemy.hp);
 		write(1, "\nUn ennemi attaque, defends-toi !\n", 35);
-		while (enemy.hp > 0)
+		while ((enemy.hp > 0) && (player.hp > 0))
 		{
 			enemyhpbuffer = ft_itoa(enemy.hp);
+			enemydefbuffer = ft_itoa(enemy.def);
+			enemydmgbuffer = ft_itoa(enemy.dmg);
 			write(1, "\n====================\n", 22);
 			write(1, "PV de l'ennemi : ", 18);
 			ft_put_str(enemyhpbuffer);
 			write(1, " / ", 3);
 			ft_put_str(enemyhpmax);
+			write(1, "\n--------------------\n", 22);
+			write(1, "DEF : ", 6);
+			ft_put_str(enemydefbuffer);
+			write(1, "\n--------------------\n", 22);
+			write(1, "ATK : ", 6);
+			ft_put_str(enemydmgbuffer);
 			write(1, "\n====================\n", 22);
 			free(enemyhpbuffer);
+			free(enemydefbuffer);
+			free(enemydmgbuffer);
 			// Affiche les PV de l'ennemi.
 
 			ft_show_spells(nspell - 1/*Nombre de spells actuellement débloqués à ce stade*/);
@@ -213,6 +266,9 @@ void	ft_atk(char *nomperso)
 			write(1, "\n====================\n", 22);
 			free(playerhpbuffer);
 			// Affiche les PV du player.
+			
+			ft_show_exp(playerptr);
+			// Affiche l'xp du player.
 
 			write(1, "\nQuel sort utilises-tu ?\n", 26);
 			c[0] = 30;
@@ -260,17 +316,24 @@ void	ft_atk(char *nomperso)
 				ft_use_spell(c[0], enemyptr, playerptr, 0/*Sur l'ennemi*/);
 			if (enemy.hp > 0)
 				ft_enemy_atk(enemyptr, playerptr);
+			if (player.hp <= 0)
+				defeat = 1;
 		}
 		enemynumber++;
-		nspell++;
 		if (enemynumber >= enemymax)
 			success = 1;
 	}
 	tcsetattr(STDIN_FILENO, TCSAFLUSH, &old);
-	write(1, "\nTu as tue tous les ennemis ! Bravo ", 37);
-	ft_put_str(player.name);
+	if (success == 1)
+	{
+		write(1, "\nTu as tue tous les ennemis ! Bravo ", 37);
+		ft_put_str(player.name);
+		write(1, " !\n", 3);
+	}
+	if (defeat == 1)
+	{
+		write(1, "\nOh non, tu as perdu... Retente ta chance avec un nouveau personnage !\n", 72);
+	}
 	free(enemyhpmax);
 	free(nomperso);
-	write(1, " !", 2);
-	write(1, "\nFIN\n", 5);
 }
