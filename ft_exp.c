@@ -22,6 +22,7 @@ void	ft_exp(int enemynumber, Perso *playerptr)
 	{
 		currentxp = (currentxp - 100); // Limite l'xp d'un niveau a 100xp.
 		playerptr->lvl += 1; // Le joueur gagne un niveau.
+		playerptr->def++; // La defense du player prend un point tous les deux niveaux.
 		ft_lvl_up();
 	}
 	playerptr->exp = currentxp;

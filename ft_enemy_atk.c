@@ -3,9 +3,10 @@
 void	ft_enemy_atk(Mob *enemyptr, Perso *playerptr)
 {
 	char *chardealt;
-	int dealt = enemyptr->dmg;
+	int dealt = ((enemyptr->dmg) - (playerptr->def));
 	struct timespec req = {0, PAUSE_100MS};
-	playerptr->hp -= dealt;
+	if (dealt > 0)
+		playerptr->hp -= dealt;
 
 	// ATTAQUE ENNEMIE (DEBUT)
 	BLANK_TERMINAL;

@@ -220,9 +220,11 @@ void	ft_atk(char *nomperso)
 	char *enemydmgbuffer;
 	char *enemyhpmax;
 	char *playerhpbuffer;
+	char *playerdefbuffer;
 	int *ptri;
 	player.exp = 0;
 	player.lvl = 0;
+	player.def = 1;
 	ptri = &i;
 	player.hp = 100; // A modifier dans le futur.
 	
@@ -240,18 +242,18 @@ void	ft_atk(char *nomperso)
 			enemyhpbuffer = ft_itoa(enemy.hp);
 			enemydefbuffer = ft_itoa(enemy.def);
 			enemydmgbuffer = ft_itoa(enemy.dmg);
-			write(1, "\n====================\n", 22);
+			write(1, "\n=======================\n", 25);
 			write(1, "PV de l'ennemi : ", 18);
 			ft_put_str(enemyhpbuffer);
 			write(1, " / ", 3);
 			ft_put_str(enemyhpmax);
-			write(1, "\n--------------------\n", 22);
+			write(1, "\n-----------------------\n", 25);
 			write(1, "DEF : ", 6);
 			ft_put_str(enemydefbuffer);
-			write(1, "\n--------------------\n", 22);
+			write(1, "\n-----------------------\n", 25);
 			write(1, "ATK : ", 6);
 			ft_put_str(enemydmgbuffer);
-			write(1, "\n====================\n", 22);
+			write(1, "\n=======================\n", 25);
 			free(enemyhpbuffer);
 			free(enemydefbuffer);
 			free(enemydmgbuffer);
@@ -260,11 +262,16 @@ void	ft_atk(char *nomperso)
 			ft_show_spells(nspell - 1/*Nombre de spells actuellement débloqués à ce stade*/);
 
 			playerhpbuffer = ft_itoa(player.hp);
-			write(1, "\n====================\n", 22);
+			playerdefbuffer = ft_itoa(player.def);
+			write(1, "\n=======================\n", 25);
 			write(1, "Tes PV : ", 9);
 			ft_put_str(playerhpbuffer);
-			write(1, "\n====================\n", 22);
+			write(1, "\n-----------------------\n", 25);
+			write(1, "DEF : ", 6);
+			ft_put_str(playerdefbuffer);
+			write(1, "\n=======================\n", 25);
 			free(playerhpbuffer);
+			free(playerdefbuffer);
 			// Affiche les PV du player.
 			
 			ft_show_exp(playerptr);

@@ -17,6 +17,7 @@ typedef struct characters {
 	int	hp;
 	int	exp;
 	int	lvl;
+	int	def;
 
 } Perso;
 
