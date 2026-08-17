@@ -1,0 +1,7 @@
+Alors, il reste à faire :
+	
+	- Ajouter l'action "Se reposer" qui ne tape rien mais regen 5 pv
+	- Ajouter les dommages a cote de chaque sort.
+	- Rendre l'interface generale plus claire
+	- Faire un makefile
+

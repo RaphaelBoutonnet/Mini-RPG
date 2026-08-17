@@ -4,17 +4,20 @@
 #include <stddef.h>
 #include <fcntl.h>
 #include <termios.h>
-
-void	ft_nom(void);
-void	ft_atk(void);
-char	*ft_itoa(int nb);
+#include <time.h>
 
 #ifndef STRUCTURES
 #define STRUCTURES
+#define BLANK_TERMINAL write(1, "\033[2J\033[H", 7)
+#define PAUSE_100MS 100000000L
+#define PAUSE_1S 999999999L
 
 typedef struct characters {
+	char 	name[30];
 	int	hp;
 	int	exp;
+	int	lvl;
+	int	def;
 
 } Perso;
 
@@ -25,3 +28,14 @@ typedef struct mobs {
 } Mob;
 
 #endif
+
+void	ft_put_str(char *str);
+char	*ft_itoa(int nb);
+void	ft_enemy_atk(Mob *enemyptr, Perso *playerptr);
+void	ft_anim(int nb, int dealt, int alive, int target);
+char	*ft_nom(void);
+void	ft_atk(char *nomperso);
+void	ft_lvl_up(void);
+void	ft_show_exp(Perso *playerptr);
+void	ft_exp(int enemynumber, Perso *playerptr);
+void	ft_wait_one_sec(void);
